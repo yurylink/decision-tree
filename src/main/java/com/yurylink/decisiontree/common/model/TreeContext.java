@@ -63,6 +63,16 @@ public class TreeContext {
                 append(condition.test(this));
     }
 
+    public void addNodeDescription(String description, Boolean conditionResult){
+        this.nodeCount++;
+        this.append("\n");
+        this.addTabbing().
+                append("+--- node:").
+                append(description).
+                append(" = ").
+                append(conditionResult);
+    }
+
     private StringBuilder addTabbing(){
         for (int i = 0; i < this.nodeCount; i++) {
             this.log.append(SPACES);

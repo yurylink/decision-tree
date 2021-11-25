@@ -46,6 +46,4 @@ public class DecisionTreeWithFunctionsTest {
 
         assertEquals(result, NodeResult.ERROR_INACTIVE_CLIENT.name());
     }
-
-
 }

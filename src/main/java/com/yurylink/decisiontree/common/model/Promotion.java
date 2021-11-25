@@ -1,12 +1,12 @@
 package com.yurylink.decisiontree.common.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Promotion {
 
     private int type;
     private String name;
-    private Date due;
+    private LocalDate due;
 
     public int getType() {
         return type;
@@ -24,11 +24,11 @@ public class Promotion {
         this.name = name;
     }
 
-    public Date getDue() {
+    public LocalDate getDue() {
         return due;
     }
 
-    public void setDue(Date due) {
+    public void setDue(LocalDate due) {
         this.due = due;
     }
 }

@@ -2,27 +2,69 @@ package com.yurylink.decisiontree.absclass;
 
 import com.yurylink.decisiontree.common.model.*;
 
-public abstract class Node {
+import java.util.function.Predicate;
 
-    protected abstract String getNodeDescription();
-    protected abstract boolean condition(TreeContext content);
-    protected abstract String positiveOutcome(TreeContext content);
-    protected abstract String negativeOutcome(TreeContext content);
+public class Node {
+
+    private String description;
+    private final Predicate<TreeContext> condition;
+    private Node positiveOutcome;
+    private Node negativeOutcome;
+
+    public Node(String description, Predicate<TreeContext> condition, Node positiveOutcome, Node negativeOutcome) {
+        this.description = description;
+        this.condition = condition;
+        this.positiveOutcome = positiveOutcome;
+        this.negativeOutcome = negativeOutcome;
+    }
 
     public String evaluate(TreeContext content){
-        if(content.getCompleteLog().toString().isEmpty()){
-            content.append("Stating the decision Tree: ");
+        boolean result = this.condition.test(content);
+        content.addNodeDescription(description, result);
+
+        if(condition.test(content)){
+            return positiveOutcome.evaluate(content);
+        }else{
+            return negativeOutcome.evaluate(content);
+        }
+    }
+
+
+    public static final class NodeBuilder {
+        private String description;
+        private Predicate<TreeContext> condition;
+        private Node positiveOutcome;
+        private Node negativeOutcome;
+
+        private NodeBuilder() {
         }
 
-        content.append(" \n \\--- node: ").append(getNodeDescription());
+        public static NodeBuilder aNode() {
+            return new NodeBuilder();
+        }
 
-        if(condition(content)){
-            content.append(" - TRUE ");
-            return positiveOutcome(content);
+        public NodeBuilder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
 
-        }else{
-            content.append(" - FALSE ");
-            return negativeOutcome(content);
+        public NodeBuilder setCondition(Predicate<TreeContext> condition) {
+            this.condition = condition;
+            return this;
+        }
+
+        public NodeBuilder setPositiveOutcome(Node positiveOutcome) {
+            this.positiveOutcome = positiveOutcome;
+            return this;
+        }
+
+        public NodeBuilder setNegativeOutcome(Node negativeOutcome) {
+            this.negativeOutcome = negativeOutcome;
+            return this;
+        }
+
+        public Node build() {
+            return new Node(description, condition, positiveOutcome, negativeOutcome);
         }
     }
 }

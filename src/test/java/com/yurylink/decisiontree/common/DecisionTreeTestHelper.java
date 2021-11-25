@@ -4,6 +4,7 @@ import com.yurylink.decisiontree.common.model.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
@@ -23,11 +24,10 @@ public class DecisionTreeTestHelper {
                 build();
     }
 
-
     public static Promotion getPromotionBasicMock(){
         Promotion promotion = new Promotion();
         promotion.setName("SomePromotion");
-        promotion.setDue(Date.from(Instant.now()));
+        promotion.setDue(LocalDate.now().minusDays(1));
         promotion.setType(10);
         return promotion;
     }
